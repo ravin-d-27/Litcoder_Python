@@ -19,7 +19,7 @@ def sweetness(candies, target):
 
     return c
 
-lst = list(map(int, input().strip().split()))
 target = int(input())
+lst = list(map(int, input().strip().split()))
 
 print(sweetness(lst, target))
