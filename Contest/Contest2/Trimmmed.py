@@ -1,38 +1,31 @@
-def kth_smallest_trimmed_number(nums, queries):
-    answer = []
-    
-    for query in queries:
-        position, trim = query
-        trimmed_nums = [int(num[-trim:]) for num in nums]
-        sorted_indices = sorted(range(len(trimmed_nums)), key=lambda k: (trimmed_nums[k], k))
-        original_indices = sorted(range(len(nums)), key=lambda k: sorted_indices[k])
+import heapq
+
+def find_kth_smallest_trimmed_number(original_numbers, queries):
+    result = []
+    for i in range(len(queries)):
+        k, trim = queries[i]
+        min_heap = []
         
-        answer.append(original_indices.index(position))
-    
-    return answer
+        for j in range(len(original_numbers)):
+            temp = original_numbers[j]
+            trimmed = temp[-trim:]
+            heapq.heappush(min_heap, (trimmed, j))
+        
+        top = None
+        while min_heap and k > 0:
+            trimmed, top = heapq.heappop(min_heap)
+            k -= 1
+        
+        result.append(top)
+        
+    return result
 
-# Exercise-1
-input_1 = "113 933 231 719"
-queries_1 = [
-    [1, 1],
-    [2, 2],
-    [4, 2],
-    [1, 3]
-]
 
-nums_1 = input_1.split()
-result_1 = kth_smallest_trimmed_number(nums_1, queries_1)
-print("Exercise-1 Output:", " ".join(map(str, result_1)))
+original_numbers1 = input().split()
+n = int(input())
 
-# Exercise-2
-input_2 = "123 456 246 369"
-queries_2 = [
-    [1, 1],
-    [2, 2],
-    [4, 2],
-    [1, 3]
-]
+queries1 = [tuple(map(int, input().split())) for i in range(n)]
 
-nums_2 = input_2.split()
-result_2 = kth_smallest_trimmed_number(nums_2, queries_2)
-print("Exercise-2 Output:", " ".join(map(str, result_2)))
+output1 = find_kth_smallest_trimmed_number(original_numbers1, queries1)
+for i in output1:
+    print(i, end=' ')
